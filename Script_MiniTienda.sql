@@ -80,4 +80,90 @@ DELIMITER ;
 
 
 -- Productos
+
+-- Insertar producto
+DELIMITER //
+CREATE PROCEDURE pro_InsertProduct(
+    IN v_codigo VARCHAR(45),
+    IN v_descripcion VARCHAR(100),
+    IN v_cantidad INT,
+    IN v_precio DOUBLE,
+    IN v_proveedor_id INT,
+    IN v_categoria_id INT
+)
+BEGIN
+    INSERT INTO tbl_productos (
+        pro_codigo, 
+        pro_descripcion, 
+        pro_cantidad, 
+        pro_precio, 
+        tbl_proveedores_prov_id, 
+        tbl_categorias_cat_id
+    ) 
+    VALUES (
+        v_codigo, 
+        v_descripcion, 
+        v_cantidad, 
+        v_precio, 
+        v_proveedor_id, 
+        v_categoria_id
+    );
+END //
+DELIMITER ;
+
+-- Actualizar producto
+DELIMITER //
+CREATE PROCEDURE procUpdateProduct(
+    IN v_id INT,
+    IN v_codigo VARCHAR(45),
+    IN v_descripcion VARCHAR(100),
+    IN v_cantidad INT,
+    IN v_precio DOUBLE,
+    IN v_proveedor_id INT,
+    IN v_categoria_id INT
+)
+BEGIN
+    UPDATE tbl_productos
+    SET 
+        pro_codigo = v_codigo,
+        pro_descripcion = v_descripcion,
+        pro_cantidad = v_cantidad,
+        pro_precio = v_precio,
+        tbl_proveedores_prov_id = v_proveedor_id,
+        tbl_categorias_cat_id = v_categoria_id
+    WHERE pro_id = v_id;
+END //
+DELIMITER ;
+
+-- Seleccionar productos
+DELIMITER //
+CREATE PROCEDURE procSelectProduct()
+BEGIN
+    SELECT 
+        p.pro_id, 
+        p.pro_codigo, 
+        p.pro_descripcion, 
+        p.pro_cantidad, 
+        p.pro_precio, 
+        pv.prov_nombre AS proveedor, 
+        c.cat_descripcion AS categoria
+    FROM tbl_productos p
+    INNER JOIN tbl_proveedores pv ON p.tbl_proveedores_prov_id = pv.prov_id
+    INNER JOIN tbl_categorias c ON p.tbl_categorias_cat_id = c.cat_id;
+END //
+DELIMITER ;
+
+-- Eliminar producto
+DELIMITER //
+CREATE PROCEDURE procDeleteProduct(IN v_id INT)
+BEGIN
+    DELETE FROM tbl_productos WHERE pro_id = v_id;
+END //
+DELIMITER ;
+
+
+
+
 -- Usuarios
+
+
